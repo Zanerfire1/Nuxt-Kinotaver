@@ -1,3 +1,12 @@
+<script lang="ts" setup>
+    import { useFilmsStore } from '~/stors/useFilmsStore';
+
+    const filmsStore = useFilmsStore();
+
+    filmsStore.fetchFilms();
+
+</script>
+
 <template>
     <div class="row my-4">
         <div class="col-md-4">
@@ -29,14 +38,18 @@
         </div>
     </div>
 <div class="row row-cols-1 row-cols-md-3 g-4">
-  <div class="col">
+  <div class="col "  v-for="film in filmsStore.films" :key="film.id">
     <div class="card h-100">
-      <img src="https://kinojump.com/uploads/posts/2022-07/neverojatnoe-prikljuchenie-dzhodzho-zolotoj-veter.webp" class="card-img-top" alt="...">
+      <img :src="film.link_img" class="card-img-top" alt="...">
       <div class="card-body">
-        <h5 class="card-title">Невероятные приключения ДжоДжо: Золотой ветер</h5>
-        <p class="card-text">Рейтинг: 5</p>
-        <p class="card-text">Длительность: 39 серий, 25 мин</p>
-        <p class="card-text">Экшен, Фантастика, Приключение, Комедия</p>
+        <h5 class="card-title">{{ film.name }}</h5>
+        <p class="card-text">Отценка:  {{ film.ratingAvg }}</p>
+        <p class="card-text">Длительность: {{ film.duration }}</p>
+        <p class="card-text" v-if="film.categories.length != 0">
+            <template v-for="(genre, index) in film.categories" :key="genre.id">
+            {{ (index != film.categories.length - 1) ? genre.name+', ' : genre.name}}
+        </template></p>
+        <p class="card-text" v-else>Нет жанров</p>
       </div>
       <div class="card-footer text-end">
        <button class="btn btn-outline-primary">Смотреть</button>
