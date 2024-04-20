@@ -6,6 +6,7 @@ export const useFilmsStore = defineStore('films', ()=> {
   const page = ref(1);
   const total = ref(0);
   const size = 2;
+  const isLoading = ref(false);
   const params:{
     category: number | null,
     country: number | null,
@@ -49,9 +50,12 @@ export const useFilmsStore = defineStore('films', ()=> {
 	}
 
   async function fetchFilms(){
+    isLoading.value = true;
     const response = await api.get('/films',{params});
+    isLoading.value = false;
     films.value = response.data.films;
     total.value = response.data.total;
+  
   }
   return{
     films,
@@ -60,6 +64,7 @@ export const useFilmsStore = defineStore('films', ()=> {
     addCountryToParams,
     addSortToParams,
     total,
+    isLoading,
     size,
     page,
     changePage,

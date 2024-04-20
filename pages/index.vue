@@ -68,6 +68,16 @@ const resetParams = () => {
            <button class="btn btn-outline-warning" @click="resetParams">Recet</button> 
         </div>
     </div>
+
+<!--  -->
+<div class="text-center" v-if="filmsStore.isLoading">
+<div class="spinner-border text-danger" role="status" >
+  <span class="visually-hidden">Loading...</span>
+</div>
+</div>
+
+
+<template v-else>
 <div class="row row-cols-1 row-cols-md-4 g-4">
   <div class="col "  v-for="film in filmsStore.films" :key="film.id">
     <div class="card h-100">
@@ -88,6 +98,8 @@ const resetParams = () => {
     </div>
   </div>
 </div>
+
+
 
 <!--pagination list films-->
 <nav aria-label="Page navigation " class="mt-4 d-flex justify-content-center">
@@ -115,4 +127,6 @@ const resetParams = () => {
     </li>
   </ul>
 </nav>
+
+</template>
 </template>
