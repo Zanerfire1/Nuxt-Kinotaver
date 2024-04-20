@@ -8,7 +8,8 @@
     const categoriesStore = useCategoriesStore();
     const countriesStore = useCountriesStore();
 
-    const category = ref(null);
+
+const category = ref(null);
     watch(category, (newCategory) => {
 	  filmsStore.addCategoryToParams(newCategory);
 });
@@ -17,7 +18,7 @@ const sortBy = ref('name');
     watch(sortBy, (newSortBy) => {
 	  filmsStore.addSortToParams(newSortBy);
   });
-
+  
 const country = ref(null);
     watch(country, (newCountry) => {
 	  filmsStore.addCountryToParams(newCountry);
@@ -29,6 +30,12 @@ const resetParams = () => {
   sortBy.value = 'name';
   filmsStore.fetchFilms();
 }
+
+
+
+
+
+
     filmsStore.fetchFilms();
     categoriesStore.fetchCategories();
 
@@ -86,15 +93,23 @@ const resetParams = () => {
 <nav aria-label="Page navigation " class="mt-4 d-flex justify-content-center">
   <ul class="pagination">
     <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
+      <a class="page-link" 
+      :class="{'disabled': filmsStore.page-1 ==0}"
+      href="#" aria-label="Previous" @click.prevent="filmsStore.changePage(filmsStore.page-1)">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item" v-for="page in Math.ceil(filmsStore.total/filmsStore.size)"
+      :key="page">
+      <a class="page-link"
+      href="#"
+      :class="{'active': page == filmsStore.page}"
+      @click.prevent="filmsStore.changePage(page)">
+      {{ page }}</a></li>
     <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
+      <a class="page-link"
+      :class="{'disabled': filmsStore.page == Math.ceil(filmsStore.total/filmsStore.size)}"
+       href="#" aria-label="Next" @click.prevent="filmsStore.changePage(filmsStore.page+1)">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
