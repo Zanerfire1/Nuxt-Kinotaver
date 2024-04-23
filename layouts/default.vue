@@ -17,8 +17,8 @@
   </template>
   <template v-else>
   <div class="d-flex align-items-center">
-    <a href="#" class="link-offset-1 pe-3">{{  authStore.authData.fio }}</a>
-    <button class="btn btn-outline-danger me-3 " @click="authStore.signout">Sign Out</button>
+    <a href="#" class="link-offset-1 pe-3" @click.prevent="$router.push('/profile')">{{  authStore.authData.fio }}</a>
+    <button class="btn btn-outline-danger me-3 " @click="authStore.signout(), $router.push('/')">Sign Out</button>
   </div>
   </template>
    </div>

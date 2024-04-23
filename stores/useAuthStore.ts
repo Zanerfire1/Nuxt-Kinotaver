@@ -25,7 +25,7 @@ export const useAuthStore = defineStore('auth',()=> {
   
 
   async function signout() {
-    await api.post('/auth/signout', null, {headers: {'Authorization': 'Bearer '+authData.value.token,
+    await api.post('/auth/signout', null, {headers: {'Authorization': 'Bearer '+ authData.value.token,
        }
     });
     removeAuthData();
@@ -46,8 +46,6 @@ function readAuthData(data:any) {
     authData.value = JSON.parse(atob(authCookie.value));
   }
 }
-readAuthData();
-
 
   return{
     authData,
