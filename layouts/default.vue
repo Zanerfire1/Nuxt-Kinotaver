@@ -5,10 +5,10 @@
 <template>
         <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">
+    <NuxtLink to="/" class="navbar-brand" href="#">
       <img src="/public/fusion3.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
       KinoTower
-    </a>
+    </NuxtLink>
   <template v-if="!authStore.authData">
     <div class="d-fiex">
         <button @click="$router.push('/signup')" class="btn btn-outline-primary me-3">Sign Up</button>

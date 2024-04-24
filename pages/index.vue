@@ -93,7 +93,7 @@ const resetParams = () => {
         <p class="card-text" v-else>Нет жанров</p>
       </div>
       <div class="card-footer text-end">
-       <button class="btn btn-outline-primary">Смотреть</button>
+       <button class="btn btn-outline-primary" @click="$router.push('/film/'+film.id)">Смотреть</button>
       </div>
     </div>
   </div>
