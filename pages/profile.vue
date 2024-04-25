@@ -1,6 +1,32 @@
 <script setup lang="ts">
   const profileStore = useProfileStore();
+  const genderStore = useGendersStore();
+  
+  const fio = ref();
+  const email = ref();
+  const birthday = ref();
+  const gender = ref(0);
+  const authStore = useAuthStore();
 
+  const profileLoad = async () =>{  
+    await profileStore.fetchUserData(authStore.authData.id);
+    fio.value = profileStore.userData.fio;
+    email.value = profileStore.userData.email;
+    birthday.value = profileStore.userData.birthday;
+    gender.value = profileStore.userData.gender.id
+    
+
+}
+profileLoad();
+
+
+  const editProfile = async () =>{
+    if (fio.value && email.value && birthday.value && gender.value) {
+      await profileStore.updateProfile(fio.value, email.value, birthday.value, gender.value);
+      profileLoad();
+      
+    }
+  }
 </script>
 
 <template>
@@ -26,9 +52,10 @@
     <p>Birthday: {{ profileStore.userData.birthday }}</p>
     <p>Gender: {{ profileStore.userData.gender.name }}</p>
     <div>
-      <button class="btn btn-warning me-3">Edit</button>
-      <button class="btn btn-danger">Delete Account</button>
+      <button type="button" class="btn btn-warning me-3" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Edit</button>
+      <button class="btn btn-danger" @click="profileStore.removeUserData(), $router.push('/')" >Delete Account</button>
     </div>
+    
   </div>
   <div class="tab-pane fade" id="reviews-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
     <div v-for="review in profileStore.reviewsData" :key="review.id">
@@ -77,6 +104,45 @@
   </div>
 
 </div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Edit profile</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">FIO:</label>
+              <input type="text" v-model="fio" class="form-control" id="fio">
+            </div>
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Email address:</label>
+              <input type="email" class="form-control" v-model="email" id="email">
+            </div>
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Birthday:</label>
+              <input type="date" class="form-control" v-model="birthday" id="birthday">
+            </div>
+            <div class="mb-3 mt-2">
+              <label for="gender">Select Gender</label>
+              <select v-model="gender" class="form-select" id="gender">
+                <option value="null"></option>
+                <option v-for="gender in genderStore.genders" :key="gender.id"  :value="gender.id" >{{ gender.name }}</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" @click="editProfile" data-bs-dismiss="modal"  class="btn btn-primary"> Change</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <div class="d-flex justify-content-center" v-else>
   <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">

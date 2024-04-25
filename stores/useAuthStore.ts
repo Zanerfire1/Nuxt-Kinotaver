@@ -52,5 +52,6 @@ function readAuthData(data:any) {
     signin,
     signout,
     signup,
+    removeAuthData,
   }
 })

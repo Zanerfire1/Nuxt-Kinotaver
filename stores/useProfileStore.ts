@@ -25,6 +25,15 @@ export const useProfileStore = defineStore('profile', () => {
       reviewsData.value = res.data.reviews;
     }
 
+    async function removeUserData() {
+      await api.delete(`/users`, {
+        headers: {
+          'Authorization':'Bearer '+ authStore.authData.token,
+        }
+      })
+      authStore.removeAuthData();
+    }
+
     async function fetchRatingsData() {
       const res = await api.get(`/users/${authStore.authData.id}/ratings`, {
         headers: {
@@ -34,7 +43,21 @@ export const useProfileStore = defineStore('profile', () => {
       ratingsData.value = res.data.ratings;
     }
 
-    fetchUserData(authStore.authData.id);
+    async function updateProfile(fio:string, email:string, birthday:string, gender_id: number) {
+      const res = await api.put(`/users`,{
+        fio,
+        email,
+        birthday,
+        gender_id,
+      },{
+        headers: {
+          'Authorization':'Bearer '+ authStore.authData.token,
+        }
+      });
+
+    }
+
+
     fetchReviewsData();
     fetchRatingsData();
 
@@ -42,6 +65,9 @@ export const useProfileStore = defineStore('profile', () => {
     return {
       userData,
       reviewsData,
-      ratingsData
+      ratingsData,
+      fetchUserData,
+      updateProfile,
+      removeUserData
     }
 });

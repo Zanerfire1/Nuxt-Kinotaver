@@ -3,6 +3,8 @@
   const route = useRoute();
   const authStore = useAuthStore();
   const message = ref('');
+  const hoverRating = ref(0);
+
   const sendReview = () =>{
     if(message.value){
         detailFilmStore.sendReview(route.params.id, message.value)
@@ -23,16 +25,25 @@
     <div class="col"> <iframe width="980" height="500" :src='detailFilmStore.film.link_video' title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     
     </div>
-    <div class="col">
-        <div class="d-flex mt-4 ms-4">
-        <a href="" class="link-dark"><i class="fa-solid fa-star fa-xl "></i></a>
-        <a href="" class="link-dark"><i class="fa-solid fa-star fa-xl "></i></a>
-        <a href="" class="link-dark"><i class="fa-solid fa-star fa-xl "></i></a>
-        <a href="" class="link-dark"><i class="fa-solid fa-star fa-xl "></i></a>
-        <a href="" class="link-dark"><i class="fa-solid fa-star fa-xl "></i></a>
-        </div>
-        
-    </div>
+<div class="col" v-if="authStore.authData">
+    <div class="d-flex  flex-column align-items-center gap-2"> 
+     <p v-for="index in [5, 4, 3, 2, 1]" :key="index"> 
+      <a @click.prevent="detailFilmStore.addRating(index)" class="text-warning link-offset-2 link-underline link-underline-opacity-0"> 
+       <i :class="hoverRating >= index ? 'fas fa-star fa-2xl' : 'fa-sharp fa-regular fa-star fa-2xl'" @mouseover="hoverRating = index"></i> 
+      </a> 
+    </p> 
+</div>
+</div>
+<div class="col" v-else>
+    <div class="d-flex  flex-column align-items-center gap-2">
+        <h5 class="text-danger">SIGN UP STUPID MAAAN, TO SEND RATING!!!!!</h5>
+        <p v-for="index in [5, 4, 3, 2, 1]" :key="index"> 
+         <a  class="text-warning link-offset-2 link-underline link-underline-opacity-0"> 
+          <i :class="hoverRating >= index ? 'fas fa-star fa-2xl' : 'fa-sharp fa-regular fa-star fa-2xl'" @mouseover="hoverRating = index"></i> 
+         </a> 
+        </p> 
+ </div>
+</div>
 </div>
 <div class="row mt-5">
     <div class="col">
@@ -82,8 +93,8 @@
         <div class="row">
             <h6>{{ review.message}}</h6>
         </div>
+        <hr class="mt-3">
     </div>
-<hr class="mt-3">
 </div>
 
 </template>

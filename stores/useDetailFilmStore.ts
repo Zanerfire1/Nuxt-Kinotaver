@@ -18,6 +18,18 @@ async function fetchReviews(id: number) {
   reviews.value = res.data.reviews
 }
 
+async function addRating(ball:number) {
+  const res = await api.post(`/users/${authStore.authData.id}/ratings`, {
+    film_id: film.value.id,
+    ball
+  },  {
+    headers: {
+      'Authorization':'Bearer '+ authStore.authData.token,
+    }
+  })
+  fetchFilm(film.value.id);
+}
+
 async function sendReview(filmId:number,message:string) {
   const res = await api.post(`/users/${authStore.authData.id}/reviews`, {
     film_id: filmId,
@@ -36,5 +48,6 @@ async function sendReview(filmId:number,message:string) {
     reviews,
     authStore,
     sendReview,
+    addRating
   }
 })
